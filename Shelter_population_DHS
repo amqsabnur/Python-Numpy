@@ -1,0 +1,17 @@
+#Fardous Sabnur
+#This program uses data that has the daily number of families and individuals residing in the Department of Homeless Services (DHS) shelter system
+#Makes a plot of the fraction of the total population that are children over time from the data in input file
+# directions given in READEME file#1
+
+#tools needed
+import pandas as pd                              
+import matplotlib.pyplot as plt
+
+user_input = input("Enter name of input file:")
+homeless_file = pd.read_csv(x)
+homeless_file['Fraction Children']= homeless_file["Total Children in Shelter"]/homeless_file["Total Individuals in Shelter"]
+homeless_file.plot(x = "Date of Census", y = "Fraction Children")
+
+fig= plt.gcf()
+fig.savefig(input('Enter name of output file:'))
+
