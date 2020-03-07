@@ -1,0 +1,25 @@
+
+#Fardous Sabnur
+#This program maps data using pandas, numpy, and folium.
+#the program write a program that asks the user for the name of a CSV file, name of the output file, 
+#and adds a marker vehicle collisions near Hunter College
+
+#Software tools needed
+import folium
+import pandas as pd
+
+#ask user for file name 
+input_file =input("Enter CSV file name:")
+files= pd.read_csv(input_file)
+
+#Create a map, centered at Hunter college (40.75, -74.125)
+mapfile= folium.Map(location=[40.75, -74.125])
+for index, row in files.iterrows():
+    lat= row["LATITUDE"]
+    lon= row["LONGITUDE"]
+    time= row["TIME"]
+    marker= folium.Marker([lat, lon], popup= time)
+    marker.add_to(mapfile)
+
+output_file = input('Enter output file')
+mapfile.save(outfile=output_file)
