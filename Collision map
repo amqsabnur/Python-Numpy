@@ -3,6 +3,7 @@
 #This program maps data using pandas, numpy, and folium.
 #the program write a program that asks the user for the name of a CSV file, name of the output file, 
 #and adds a marker vehicle collisions near Hunter College
+#direction on how to use this ode in README file under file #2 (Collision Map)
 
 #Software tools needed
 import folium
