@@ -6,13 +6,14 @@
 import folium
 import pandas as pd
 
-#this function gets input file from user
+#this function gets name of the CSV and returns a dataframe of the contents.
 def getData():
     file =input("Enter CSV file name:")
     files= pd.read_csv(file)
     return(files)
 
-#this function gets the latitude and longtitue for the current location
+#this function asks the user for the exact name of the columns that contains the latitude and longitude and 
+#returns those values as a tuple.
 def getColumnNames():
     latName= input("enter latitude")
     lonName = input("enter longitude") 
