@@ -1,0 +1,69 @@
+#Fardous Sabnur
+#This program maps data using pandas, and folium.
+#THis program uses functions that maps GIS data from NYC OpenData CSV files and marks the current location and closest point
+
+#Software tools needed
+import folium
+import pandas as pd
+
+#this function gets input file from user
+def getData():
+    file =input("Enter CSV file name:")
+    files= pd.read_csv(file)
+    return(files)
+
+#this function gets the latitude and longtitue for the current location
+def getColumnNames():
+    latName= input("enter latitude")
+    lonName = input("enter longitude") 
+    return(latName,lonName)
+
+#this function gets the latitude and longtitue for the closest pont
+def getLocale():
+    lat = float(input("What is your latitude?"))
+    lon = float(input("What is your longitude?"))
+    return(lat, lon)
+
+#this function comptes the Euclidan distance 
+def computeDist(x,y,x1,y1):
+    d =(x-x1)**2+(y-y1)**2 
+    return(d)
+
+#creates markers and decide it's color and shape 
+def dotAllPoints(cMap,df,latCol,lonCol):
+    for i, row in df.iterrows():
+        folium.CircleMarker(location=[row[latCol],row[lonCol]], radius=4,color='red').add_to(cMap)
+
+#adds marker to the input locations
+def markAndFindClosest(cMap,df,latCol,lonCol,cLat,cLon):
+    df['Dist'] = df[[latCol,lonCol]].apply(lambda row: computeDist(*row,cLat,cLon), axis=1)
+    minRow = df[df['Dist'] == df['Dist'].min()]
+
+    folium.Marker(location=[float(minRow[latCol]),float(minRow[lonCol])],
+                  popup="Closest").add_to(cMap)
+    folium.Marker(location=[cLat,cLon],
+                  popup="You Are Here",
+                  icon=folium.Icon(color='red')).add_to(cMap)
+
+#nameand save the output file
+def writeMap(cMap):
+    outF = input('Enter output file: ')
+    cMap.save(outfile=outF)
+
+#function to execue all the previous functions
+def main():
+    dataF = getData()
+
+    latColName, lonColName = getColumnNames()
+
+    lat, lon = getLocale()
+
+    cityMap = folium.Map(location = [lat,lon], tiles = 'cartodbpositron',zoom_start=11)
+
+    dotAllPoints(cityMap,dataF,latColName,lonColName)
+
+    markAndFindClosest(cityMap,dataF,latColName,lonColName,lat,lon)
+
+    writeMap(cityMap)
+if __name__== "__main__":
+    main()
